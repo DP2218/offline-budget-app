@@ -64,7 +64,7 @@ UI.registerView('settings', {
                 <div class="modal-content">
                     <h3>Set Passcode</h3>
                     <p class="text-muted" style="font-size:12px; margin-bottom:10px;">Enter a 4-digit PIN. This is local only, if you forget it, you will have to reset the app data.</p>
-                    <input type="password" id="new-pin" class="input-field" placeholder="PIN" maxlength="4" style="text-align:center; font-size:24px; letter-spacing:10px;">
+                    <input type="password" id="new-pin" class="input-field passcode-input" placeholder="4 digits" maxlength="4">
                     <div class="modal-actions">
                         <button id="btn-cancel-pin" class="text-btn">Cancel</button>
                         <button id="btn-remove-pin" class="text-btn danger hidden">Remove</button>
