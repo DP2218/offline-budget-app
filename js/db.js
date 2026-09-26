@@ -1,7 +1,7 @@
 // db.js - IndexedDB Data Layer
 
 const DB_NAME = 'moneyNoteApp';
-const DB_VERSION = 1;
+const DB_VERSION = 3;
 
 let dbInstance = null;
 

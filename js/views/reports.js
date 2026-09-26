@@ -4,8 +4,8 @@ import { DB } from '../db.js';
 UI.registerView('reports', {
     async render() {
         return `
-            ${UI.header('Reports')}
-            <div class="reports-container">
+            ${UI.header('Reports', '', '<button class="icon-btn" id="export-jpg-btn" title="Save as Image">📷</button>')}
+            <div class="reports-container" id="report-export-area">
                 <div class="tabs">
                     <button class="tab-btn active" data-report="monthly">Monthly</button>
                     <button class="tab-btn" data-report="yearly">Yearly</button>
@@ -244,5 +244,44 @@ UI.registerView('reports', {
             }
             this.loadData();
         });
+
+        const exportBtn = document.getElementById('export-jpg-btn');
+        if (exportBtn) {
+            exportBtn.addEventListener('click', async () => {
+                const originalText = exportBtn.textContent;
+                exportBtn.textContent = '⏳';
+                
+                try {
+                    const element = document.getElementById('report-export-area');
+                    
+                    // html2canvas is loaded globally from index.html
+                    const canvas = await window.html2canvas(element, {
+                        scale: 2, // High resolution
+                        backgroundColor: getComputedStyle(document.body).backgroundColor
+                    });
+                    
+                    // Convert to Blob instead of Data URL to bypass strict browser security blocks
+                    canvas.toBlob((blob) => {
+                        const url = URL.createObjectURL(blob);
+                        const title = document.getElementById('report-title').textContent.replace(/\s+/g, '-');
+                        
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `report-${title}.jpg`;
+                        document.body.appendChild(a);
+                        a.click();
+                        
+                        // Clean up
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    }, 'image/jpeg', 0.92);
+                } catch (err) {
+                    console.error("Export failed", err);
+                    alert("Failed to export image.");
+                } finally {
+                    exportBtn.textContent = originalText;
+                }
+            });
+        }
     }
 });
