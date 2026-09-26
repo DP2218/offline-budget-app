@@ -67,6 +67,9 @@ UI.registerView('calendar', {
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
         
+        // Clear existing day cells to prevent duplicates on re-render
+        document.querySelectorAll('.calendar-grid .cal-day').forEach(el => el.remove());
+        
         let gridHtml = '';
         
         // Empty slots before 1st
